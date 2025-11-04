@@ -13,7 +13,7 @@ import {
   Save,
   Image,
 } from 'lucide-react';
-import EventPopup from '../componenets/EventPopup';
+import EventPopup from '../components/EventPopup';
 import { useEffect } from 'react';
 import { apiClient } from '../utils/apiClient';
 
