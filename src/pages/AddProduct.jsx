@@ -13,7 +13,7 @@ import {
   Save,
   Image,
 } from 'lucide-react';
-import EventPopup from '../components/EventPopup';
+import EventPopup from '../componenets/EventPopup';
 import { useEffect } from 'react';
 import { apiClient } from '../utils/apiClient';
 
@@ -100,7 +100,7 @@ const AddProduct = () => {
             <div className="mb-8">
               <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition-colors">
                 <ArrowLeft className="w-5 h-5" />
-                <Link to="/">
+                <Link to="/products">
                   <span className="font-medium">Back to Products</span>
                 </Link>
               </button>
