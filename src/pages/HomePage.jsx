@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Package, Users, Box, Activity } from 'lucide-react';
-import Dashboard from '../components/Dashboard';
-import ProductsView from '../components/ProductsView';
-import Inventory from '../components/Inventory';
-// import User from '../components/User';
+import Dashboard from '../componenets/Dashboard';
+import ProductsView from '../componenets/ProductsView';
+import Inventory from '../componenets/Inventory';
+import User from '../componenets/User';
 import { useEffect } from 'react';
 
 const HomePage = () => {
