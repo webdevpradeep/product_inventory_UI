@@ -1,5 +1,5 @@
 import { Gamepad2 } from 'lucide-react';
-import AuthHeader from '../components/AuthHeader';
+import AuthHeader from '../componenets/AuthHeader';
 
 const AuthLaout = ({ children }) => {
   return (
