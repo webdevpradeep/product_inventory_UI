@@ -3,20 +3,28 @@ import { getCookie } from './cookies';
 const baseURL = 'http://localhost:5000';
 
 export const apiClient = async (url, method, body = null, tokenName = '') => {
-  const accessToken = getCookie('access_token');
+  const accessToken = getCookie('token');
 
   const defaultHeaders = {
     'Content-Type': 'application/json',
   };
 
   if (tokenName) {
-    defaultHeaders['Authorization'] = `Bearer${getCookie(tokenName)}`;
+    defaultHeaders['Authorization'] = `Bearer ${getCookie(tokenName)}`;
   } else {
     defaultHeaders['Authorization'] = `Bearer ${accessToken}`;
   }
+
   let config;
 
   if (!body || body === null) {
+    config = {
+      method: method,
+      headers: {
+        ...defaultHeaders,
+      },
+    };
+  } else {
     config = {
       method: method,
       headers: {
@@ -30,35 +38,36 @@ export const apiClient = async (url, method, body = null, tokenName = '') => {
   return await response.json();
 };
 
-// user authentication .......................................
-//Auth APIs
+// user authentication ...............................
+// Auth APIs
+apiClient.login = (payload) => apiClient('/users/login', 'POST', payload);
 
-apiClient.login = async (payload) =>
-  await apiClient('/uers/login', 'POST', payload);
+apiClient.signup = (payload) => apiClient('/users/signup', 'POST', payload);
 
-apiClient.signup = async (payload) =>
-  await apiClient('/uers/signup', 'POST', payload);
+apiClient.resetPassword = (token, payload) =>
+  apiClient(`/users/resetPassword/${token}`, 'PATCH', payload);
 
-apiClient.getProducts = async (payload) => {
-  return await apiClient('/manageStock/getProducts', 'GET', payload);
-};
+apiClient.forgotPassword = (payload) =>
+  apiClient('/users/forgotPassword', 'PATCH', payload);
 
-apiClient.getAllInventory = async (payload) => {
-  return await apiClient('/manageStock/getAllInventory', 'GET', payload);
-};
+// Product APIs
 
-apiClient.getAllUsers = async (payload) => {
-  return await apiClient('/manageStock/getAllUsers', 'GET', payload);
-};
+apiClient.getProducts = () => apiClient('/manageStock/getProducts', 'GET');
 
-apiClient.addProduct = async (payload) => {
-  return await apiClient('/manageStock/addProduct', 'POST', payload);
-};
+apiClient.getAllInventory = () =>
+  apiClient('/manageStock/getAllInventory', 'GET');
 
-apiClient.productEntry = async (payload) => {
-  return await apiClient('/manageStock/productEntry', 'POST', payload);
-};
+apiClient.getAllEntries = (page, limit) =>
+  apiClient(`/manageStock/getAllEntries?page=${page}&limit=${limit}`, 'GET');
 
-apiClient.productExit = async (payload) => {
-  return await apiClient('/manageStock/productExit', 'POST', payload);
-};
+apiClient.getAllExits = (page, limit) =>
+  apiClient(`/manageStock/getAllExits?page=${page}&limit=${limit}`, 'GET');
+
+apiClient.addProduct = (payload) =>
+  apiClient('/manageStock/addProduct', 'POST', payload);
+
+apiClient.productEntry = (payload) =>
+  apiClient('/manageStock/productEntry', 'POST', payload);
+
+apiClient.productExit = (payload) =>
+  apiClient('/manageStock/productExit', 'POST', payload);
