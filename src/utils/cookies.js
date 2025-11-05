@@ -1,29 +1,32 @@
-const setCookie = (name, vaule, exSeconds = 3600) => {
+const setCookie = (cname, cvalue, exSeconds = 3600) => {
+  const maxAge = 'Max-Age=' + exSeconds;
   if (typeof window !== 'undefined') {
-    const maxAge = `Max-Age=${exSeconds}`;
-    document.cookie = `${name}=${encodeURIComponent(vaule)};
-        ${maxAge}; path =/; SameSite=Lax;`;
+    // browser code
+    document.cookie = `${cname}=${cvalue}; ${maxAge}; path=/; SameSite=Lax;`;
   }
 };
 
-const getCookie = (name) => {
-  if (typeof window === 'undefined') return null;
-
-  const decodeCookie = decodeURIComponent(document.cookie);
-  const cookiesArray = decodeCookie.split(';');
-
-  for (let cookie of cookiesArray) {
-    cookie = cookie.trim();
-    if (cookie.startsWith(name + '=')) {
-      return cookie.substring((name.length = 1));
+function getCookie(cname) {
+  const name = cname + '=';
+  if (typeof window !== 'undefined') {
+    // browser code
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
+      }
     }
   }
   return null;
-};
+}
 
-const deletCookie = (name) => {
-  if (typeof window !== 'undefined') {
-    document.cookie = `${name}=; path=/; Max-Age=-1; SameSite=Lax`;
-  }
-};
-export { setCookie, getCookie, deletCookie };
+function deleteCookie(name) {
+  document.cookie = name + '=; path=/; Max-Age=-99999999;';
+}
+
+export { setCookie, getCookie, deleteCookie };
